@@ -13,7 +13,7 @@ TRIES = 1
 # The packet that we shall send to each router along the path is the ICMP echo
 # request packet, which is exactly what we had used in the ICMP ping exercise.
 # We shall use the same packet that we built in the Ping exercise
-
+# Dean
 def checksum(string):
 # In this function we make the checksum of our packet
     csum = 0
