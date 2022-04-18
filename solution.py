@@ -107,9 +107,26 @@ def get_route(hostname):
                 #Fetch the icmp type from the IP packet
                 icmpHeader = recvPacket[20:28]
                 ID, types, myChecksum, code, sequence = struct.unpack("bbHHh", icmpHeader)
+                types = ID
+
+                try:  # try to fetch the hostname
+                    # Fill in start
+                    hostname_addr_recv = gethostbyaddr(addr[0])
+                    print(str(addr[0]) + ' , ' + str(hostname_addr_recv[0]))
+                    # Fill in end
+                except herror:  # if the host does not provide a hostname
+                    # Fill in start
+                    hostname_addr_recv = "hostname not returnable"
+                    # Fill in end
+
                 #Fill in end
                 try: #try to fetch the hostname
+                    bytes = struct.calcsize("d")
+                    timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     #Fill in start
+                    #You should add your responses to your lists here
+                    tracelist1 = [str(ttl) + " * * * Time Exceeded."]
+                    tracelist2.append(tracelist1)
                     #Fill in end
                 except herror:   #if the host does not provide a hostname
                     #Fill in start
@@ -121,6 +138,7 @@ def get_route(hostname):
                     bytes])[0]
                     #Fill in start
                     #You should add your responses to your lists here
+                    p
                     #Fill in end
                 elif types == 3:
                     bytes = struct.calcsize("d")
