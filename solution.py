@@ -138,7 +138,7 @@ def get_route(hostname):
                     #You should add your responses to your lists here
                     # Type 11, Code 0 - TTL Expired
                     timeDelta = timeReceived - timeSent
-                    print("  %d   %.0f ms    %s %s" %(ttl, timeDelta*1000, addr[0], hostname_addr_recv))
+                    #print("  %d   %.0f ms    %s %s" %(ttl, timeDelta*1000, addr[0], hostname_addr_recv))
                     tracelist1 = [str(ttl) + " * * * TTL Expired - Time Exceeded."]
                     tracelist2.append(tracelist1)
                     #Fill in end
