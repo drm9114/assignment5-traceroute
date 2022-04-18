@@ -85,7 +85,7 @@ def get_route(hostname):
                 whatReady = select.select([mySocket], [], [], timeLeft)
                 howLongInSelect = (time.time() - startedSelect)
                 if whatReady[0] == []: # Timeout
-                    tracelist1.append("* * * Request timed out.")
+                    tracelist1.append(str(ttl) + " * * * Request timed out.")
                     #Fill in start
                     #You should add the list above to your all traces list
                     tracelist2.append(tracelist1)
@@ -94,7 +94,7 @@ def get_route(hostname):
                 timeReceived = time.time()
                 timeLeft = timeLeft - howLongInSelect
                 if timeLeft <= 0:
-                    tracelist1.append("* * * Request timed out.")
+                    tracelist1.append(str(ttl) + " * * * Request timed out.")
                     #Fill in start
                     #You should add the list above to your all traces list
                     tracelist2.append(tracelist1)
@@ -141,11 +141,15 @@ def get_route(hostname):
                 elif types == 0:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
+                    timeDelta = timeReceived - timeSent
+                    print(" %d %.0f ms    %s %s" %(ttl, timeDelta*1000, addr[0], hostname_addr_recv))
+                    timeFinal = str(round)
                     #Fill in start
                     #You should add your responses to your lists here and return your list if your destination IP is met
                     #Fill in end
                 else:
                     #Fill in start
+                    print("dean")
                     #If there is an exception/error to your if statements, you should append that to your list here
                     #Fill in end
                 break
