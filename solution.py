@@ -130,6 +130,8 @@ def get_route(hostname):
                     #Fill in start
                     #You should add your responses to your lists here
                     # Type 11, Code 0 - TTL Expired
+                    timeDelta = timeReceived - timeSent
+                    print("  %d   %.0f ms    %s %s" %(ttl, timeDelta*1000, addr[0], hostname_addr_recv))
                     tracelist1 = [str(ttl) + " * * * TTL Expired - Time Exceeded."]
                     tracelist2.append(tracelist1)
                     #Fill in end
@@ -139,6 +141,8 @@ def get_route(hostname):
                     #Fill in start
                     #You should add your responses to your lists here
                     # Type 3, Code 1 - TTL Expired
+                    timeDelta = timeReceived - timeSent
+                    print("  %d   %.0f ms    %s %s" % (ttl, timeDelta * 1000, addr[0], hostname_addr_recv))
                     tracelist1 = [str(ttl) + " * * * Destination Host Unreachable."]
                     tracelist2.append(tracelist1)
                     #Fill in end
@@ -148,6 +152,9 @@ def get_route(hostname):
                     timeDelta = timeReceived - timeSent
                     print(" %d %.0f ms    %s %s" %(ttl, timeDelta*1000, addr[0], hostname_addr_recv))
                     timeFinal = str(round)
+                    tracelist1 = [str(ttl) + " * * * Destination Host Unreachable."]
+                    tracelist2.append(tracelist1)
+                    return tracelist2
                     #Fill in start
                     #You should add your responses to your lists here and return your list if your destination IP is met
                     #Fill in end
