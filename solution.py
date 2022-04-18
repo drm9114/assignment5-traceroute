@@ -70,7 +70,7 @@ def get_route(hostname):
     tracelist2 = [] #This is your list to contain all traces
 
     destAddr = gethostbyname(hostname)
-    print(hostname + " is: " + destAddr)
+    #print(hostname + " is: " + destAddr)
 
     for ttl in range(1,MAX_HOPS):
         for tries in range(TRIES):
@@ -115,7 +115,7 @@ def get_route(hostname):
                 icmpHeader = recvPacket[20:28]
                 ID, types, myChecksum, code, sequence = struct.unpack("bbHHh", icmpHeader)
                 types = ID
-                print("Types is: " + str(types) + " or " + str(ID))
+                #print("Types is: " + str(types) + " or " + str(ID))
                 try:  # try to fetch the hostname
                     # Fill in start
                     # TA Session from April 5 (Steve Slup) said gethostbyaddr()
@@ -127,7 +127,7 @@ def get_route(hostname):
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     timeDelta = timeReceived - timeSent
                     #print(str(addr[0]) + ' , ' + str(hostname_addr_recv[0]))
-                    print("  %d   %.0f ms    %s %s" %(ttl, timeDelta*1000, addr[0], "hostname not returnable"))
+                   # print("  %d   %.0f ms    %s %s" %(ttl, timeDelta*1000, addr[0], "hostname not returnable"))
                     hostname_addr_recv = "hostname not returnable"
                     # Fill in end
 
@@ -149,17 +149,17 @@ def get_route(hostname):
                     #You should add your responses to your lists here
                     # Type 3, Code 1 - TTL Expired
                     timeDelta = timeReceived - timeSent
-                    print("  %d   %.0f ms    %s %s" % (ttl, timeDelta * 1000, addr[0], hostname_addr_recv))
+                    #print("  %d   %.0f ms    %s %s" % (ttl, timeDelta * 1000, addr[0], hostname_addr_recv))
                     tracelist1 = [str(ttl) + " * * * Destination Host Unreachable."]
                     tracelist2.append(tracelist1)
                     #Fill in end
                 elif types == 0: #Echo reply - server I'm trying to trace to
-                    print("Got to Type 0")
+                    #print("Got to Type 0")
 
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     timeDelta = timeReceived - timeSent
-                    print(" %d %.0f ms    %s %s" %(ttl, timeDelta*1000, addr[0], hostname_addr_recv))
+                    #print(" %d %.0f ms    %s %s" %(ttl, timeDelta*1000, addr[0], hostname_addr_recv))
                     timeFinal = str(round)
                     tracelist1 = [str(ttl) + str(round((timeDelta) * 1000,2)) + " ms", str(addr[0]), hostname_addr_recv]
                     tracelist2.append(tracelist1)
