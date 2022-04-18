@@ -120,19 +120,6 @@ def get_route(hostname):
                     hostname_addr_recv = "hostname not returnable"
                     # Fill in end
 
-                #Fill in end
-                try: #try to fetch the hostname
-                    bytes = struct.calcsize("d")
-                    timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    #Fill in start
-                    #You should add your responses to your lists here
-                    tracelist1 = [str(ttl) + " * * * Time Exceeded."]
-                    tracelist2.append(tracelist1)
-                    #Fill in end
-                except herror:   #if the host does not provide a hostname
-                    #Fill in start
-                    #Fill in end
-
                 if types == 11:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
