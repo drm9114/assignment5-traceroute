@@ -45,23 +45,22 @@ def build_packet():
 
     # Make the header in a similar way to the ping exercise.
     # Append checksum to the header.
-    ID = os.getpid() & 0xFFF  #Get Process ID (PID)
+    #ID = os.getpid() & 0xFFF  #Get Process ID (PID)
+    ID = 0
     myChecksum = 0
     header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
     data = struct.pack("d", time.time())
     # Calculate the checksum on the data and the dummy header.
     #myChecksum = checksum(str(header + data))
     myChecksum = checksum(header + data)
-    # Don’t send the packet yet , just return the final packet in this function.
-    #Fill in end
 
+    if sys.platform == 'darwin':
+        # Convert 16-bit integers from host to network  byte order
+        myChecksum = htons(myChecksum) & 0xffff
+    else:
+        myChecksum = htons(myChecksum)
 
-
-
-
-
-    # So the function ending should look like this
-
+    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
     packet = header + data
     return packet
 
@@ -71,12 +70,12 @@ def get_route(hostname):
     tracelist2 = [] #This is your list to contain all traces
 
     destAddr = gethostbyname(hostname)
-    #print(hostname + " is: " + destAddr)
+    print(hostname + " is: " + destAddr)
 
     for ttl in range(1,MAX_HOPS):
         for tries in range(TRIES):
             #destAddr = gethostbyname(hostname)
-            tracelist1 = []
+            #tracelist1 = []
             #Fill in start
             # Make a raw socket named mySocket
             #icmp = getprotobyname("ICMP")
@@ -116,7 +115,7 @@ def get_route(hostname):
                 icmpHeader = recvPacket[20:28]
                 ID, types, myChecksum, code, sequence = struct.unpack("bbHHh", icmpHeader)
                 types = ID
-
+                print("Types is: " + str(types) + " or " + str(ID))
                 try:  # try to fetch the hostname
                     # Fill in start
                     # TA Session from April 5 (Steve Slup) said gethostbyaddr()
@@ -155,7 +154,7 @@ def get_route(hostname):
                     tracelist2.append(tracelist1)
                     #Fill in end
                 elif types == 0: #Echo reply - server I'm trying to trace to
-                    print("Got here")
+                    print("Got to Type 0")
 
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
@@ -180,3 +179,4 @@ def get_route(hostname):
 
 if __name__ == '__main__':
     get_route("google.co.il")
+    #get_route("bing.com")
