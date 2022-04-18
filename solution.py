@@ -65,9 +65,11 @@ def get_route(hostname):
     tracelist1 = [] #This is your list to use when iterating through each trace 
     tracelist2 = [] #This is your list to contain all traces
 
+    destAddr = gethostbyname(hostname)
+
     for ttl in range(1,MAX_HOPS):
         for tries in range(TRIES):
-            destAddr = gethostbyname(hostname)
+            #destAddr = gethostbyname(hostname)
 
             #Fill in start
             # Make a raw socket named mySocket
@@ -152,7 +154,7 @@ def get_route(hostname):
                     timeDelta = timeReceived - timeSent
                     print(" %d %.0f ms    %s %s" %(ttl, timeDelta*1000, addr[0], hostname_addr_recv))
                     timeFinal = str(round)
-                    tracelist1 = [str(ttl) + " * * * Destination Host Unreachable."]
+                    tracelist1 = [str(ttl) + str(round((timeDelta) * 1000,2)) + " ms", str(addr[0]), hostname_addr_recv]
                     tracelist2.append(tracelist1)
                     return tracelist2
                     #Fill in start
