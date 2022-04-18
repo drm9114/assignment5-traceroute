@@ -160,7 +160,8 @@ def get_route(hostname):
                     #Fill in end
                 else:
                     #Fill in start
-                    print("dean")
+                    tracelist1 = ["Failure Occurred"]
+                    tracelist2.append(tracelist1)
                     #If there is an exception/error to your if statements, you should append that to your list here
                     #Fill in end
                 break
