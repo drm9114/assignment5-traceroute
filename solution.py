@@ -112,11 +112,15 @@ def get_route(hostname):
                 try:  # try to fetch the hostname
                     # Fill in start
                     # TA Session from April 5 (Steve Slup) said gethostbyaddr()
-                    hostname_addr_recv = gethostbyaddr(addr[0])
-                    print(str(addr[0]) + ' , ' + str(hostname_addr_recv[0]))
+                    hostname_addr_recv = gethostbyaddr(addr[0])[0] #Get first value. Was doing it wrong. See TA session at 35:50 mark
                     # Fill in end
                 except herror:  # if the host does not provide a hostname
                     # Fill in start
+                    bytes = struct.calcsize("d")
+                    timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
+                    timeDelta = timeReceived - timeSent
+                    #print(str(addr[0]) + ' , ' + str(hostname_addr_recv[0]))
+                    print("  %d   %.0f ms    %s %s" %(ttl, timeDelta*1000, addr[0], "hostname not returnable"))
                     hostname_addr_recv = "hostname not returnable"
                     # Fill in end
 
@@ -138,7 +142,7 @@ def get_route(hostname):
                     tracelist1 = [str(ttl) + " * * * Destination Host Unreachable."]
                     tracelist2.append(tracelist1)
                     #Fill in end
-                elif types == 0:
+                elif types == 0: #Echo reply - server I'm trying to trace to
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     timeDelta = timeReceived - timeSent
