@@ -111,6 +111,7 @@ def get_route(hostname):
 
                 try:  # try to fetch the hostname
                     # Fill in start
+                    # TA Session from April 5 (Steve Slup) said gethostbyaddr()
                     hostname_addr_recv = gethostbyaddr(addr[0])
                     print(str(addr[0]) + ' , ' + str(hostname_addr_recv[0]))
                     # Fill in end
@@ -134,17 +135,21 @@ def get_route(hostname):
 
                 if types == 11:
                     bytes = struct.calcsize("d")
-                    timeSent = struct.unpack("d", recvPacket[28:28 +
-                    bytes])[0]
+                    timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     #Fill in start
                     #You should add your responses to your lists here
-                    p
+                    # Type 11, Code 0 - TTL Expired
+                    tracelist1 = [str(ttl) + " * * * TTL Expired - Time Exceeded."]
+                    tracelist2.append(tracelist1)
                     #Fill in end
                 elif types == 3:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     #Fill in start
-                    #You should add your responses to your lists here 
+                    #You should add your responses to your lists here
+                    # Type 3, Code 1 - TTL Expired
+                    tracelist1 = [str(ttl) + " * * * Destination Host Unreachable."]
+                    tracelist2.append(tracelist1)
                     #Fill in end
                 elif types == 0:
                     bytes = struct.calcsize("d")
